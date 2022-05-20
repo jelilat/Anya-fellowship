@@ -28,17 +28,6 @@ describe("Proxy", async () => {
     expect(await proxy.callStatic.getImplementation()).to.eq(shoppingv1.address);
   });
 
-  // it("proxies calls to implementation contract", async () => {
-  //   abi = [
-  //     "addToCart(string[] memory goods, uint256[] memory prices) public",
-  //     "checkout(string[] memory goods, uint256[] memory prices) public",
-  //   ];
-
-  //   const proxied = new ethers.Contract(proxy.address, abi, owner);
-
-  //   expect(await proxied.initialized()).to.eq(true);
-  // });
-
   it("cannot be initialized twice", async () => {
     abi = ["function initialize() public"];
     const proxied = new ethers.Contract(proxy.address, abi, owner);
@@ -64,10 +53,6 @@ describe("Proxy", async () => {
 
     const proxied = new ethers.Contract(proxy.address, abi, owner);
 
-    await proxied.addToCart(["apple", "orange"], [1, 2]);
-    expect(await proxied.getTotal()).to.eq(3);
-
-    await proxied.doMagic();
-    expect(await proxied.getMagicNumber()).to.eq("0x19");
+    
   });
 });
