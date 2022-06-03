@@ -27,12 +27,14 @@ contract UniswapV2Staker is ERC1155 {
 
     //checks whether the pairAddress is a valid uniswapv2 LP token address
     modifier confirmPair(address pairAddress) {
+        require(pairAddress != address(0), "Invalid pair address");
         IUniswapV2Pair pair = IUniswapV2Pair(pairAddress);
         address token0 = pair.token0();
         address token1 = pair.token1();
 
         address pairAddressFromFactory = factoryAddress.getPair(token0, token1);
         require(pairAddressFromFactory != address(0), "Not a valid UniswapV2 LP Token");
+        require(pairAddressFromFactory == pairAddress, "Not a valid UniswapV2 LP Token");
         _;
     }
 
@@ -57,6 +59,7 @@ contract UniswapV2Staker is ERC1155 {
     }
 
     function unstake(address pairAddress, uint256 amount) public {
+        require(pairAddress != address(0), "Invalid pair address");
         require(stakes[pairAddress].initialized == true, "Stake has not been initialized");
         require((stakes[pairAddress].stakers)[msg.sender] >= amount, "You don't have enough tokens");
         ERC1155 rewardToken = ERC1155(address(this));
